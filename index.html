@@ -7,17 +7,17 @@
 
     <link rel="stylesheet" href="styles.css">
 
-    <title>Operações Vertiport</title>
+    <title>Projeto</title>
 </head>
 
 <body>
      <!-- Cabeçalho de informações do sistema -->
     <header>
         <div class="title">
-            <h1>Vertiport Vila Olímpia - VVOL</h1>
+            <h1>Lista de Passageiros</h1>
         </div>
         <div class="banner">
-            <img src="img/evtol-eve-embraer-chicago-eua_widelg.jpg"
+            <img src="img/evtol.jpg"
                 alt="evtol">
         </div>
     </header>
@@ -27,15 +27,10 @@
         <input type="text" id="id" value="id" readonly  class="hidden-input">
         <input type="text" id="newPassageiro" placeholder="Adicionar novo passageiro:">
         <input type="text" id="newCPF" placeholder="CPF:">
+        <input type="text" id="newBirthDate" placeholder="Birth Date:">
         <input type="text" id="newFlight" placeholder="Flight:">
         <button onclick="ProcessItem()" id="ProcessBtn" class="addBtn">Adicionar</button>
     </section>
-
-    <header>
-        <div class="title"
-            <h2> Lista de passageiros confirmados</h2>
-        </div>
-    </header>
 
     <!-- Tabela com items existentes -->
     <section class="items">
@@ -43,6 +38,7 @@
             <tr>
                 <th>Nome</th>
                 <th>CPF</th>
+                <th>Birth Date</th>
                 <th>Flight</th>
                 <th><img src="https://cdn-icons-png.flaticon.com/512/126/126468.png" width="15px" height="15px"></th>
                 <th><img src="img/editar.png" width="15px" height="15px"></th>
@@ -54,6 +50,4 @@
 </body>
 
 </html>
-
-    
 

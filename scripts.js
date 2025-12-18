@@ -10,7 +10,7 @@ const getList = async () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      data.passageiros.forEach(item => insertList(item.id,item.nome, item.cpf, item.flight))
+      data.passageiros.forEach(item => insertList(item.id,item.nome, item.cpf, item.birthdate,item.flight))
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -30,11 +30,12 @@ getList()
   Função para colocar um item na lista do servidor via requisição POST
   --------------------------------------------------------------------------------------
 */
-const postItem = async (inputPassageiro, inputCPF, inputFlight) => {
+const postItem = async (inputPassageiro, inputCPF, inputBirthdate, inputFlight) => {
   
   var data={
     nome: inputPassageiro,
     cpf: inputCPF,
+    birthdate: inputBirthdate,
     flight: inputFlight
   };
 
@@ -49,7 +50,7 @@ const postItem = async (inputPassageiro, inputCPF, inputFlight) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data.id);
-      insertList(data.id,inputPassageiro, inputCPF, inputFlight);
+      insertList(data.id,inputPassageiro, inputCPF,inputBirthdat, inputFlight);
       alert("Passageiro adicionado!");
     })
     .catch((error) => {
@@ -96,6 +97,7 @@ const putItem = async (id, inputPassageiro, inputCPF, inputFlight) => {
     id: id,
     nome: inputPassageiro,
     cpf: inputCPF,
+    birthdate: inputBirthdate,
     flight: inputFlight
   };
 
@@ -110,7 +112,8 @@ const putItem = async (id, inputPassageiro, inputCPF, inputFlight) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data.id);
-      updateList(data.id,inputPassageiro, inputCPF, inputFlight);
+      console.log(inputBirthDate.substring(0, 10)) ;
+      updateList(data.id,inputPassageiro, inputCPF, inputBirthDate.SUBSTRING(0, 10),inputFlight);
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -123,7 +126,7 @@ const putItem = async (id, inputPassageiro, inputCPF, inputFlight) => {
   Função para atualizar um item da lista apos a edicao
   --------------------------------------------------------------------------------------
 */
-const updateList = (id, namePassageiro, cpf, flight) => {
+const updateList = (id, namePassageiro, cpf, birthdate, flight) => {
 
   var table = document.getElementById('myTable');
   var line = 0;
@@ -134,6 +137,7 @@ const updateList = (id, namePassageiro, cpf, flight) => {
     if (rowId==id){
       row.cells[0].innerHTML=namePassageiro;
       row.cells[1].innerHTML=cpf;
+      ROW.cells[2].innerHTML=birthdate;
       row.cells[2].innerHTML=flight;
     }
     
@@ -142,6 +146,7 @@ const updateList = (id, namePassageiro, cpf, flight) => {
   document.getElementById("ProcessBtn").innerHTML= "Adicionar"
   document.getElementById("newPassageiro").value = "";
   document.getElementById("newCPF").value = "";
+  document.getElementById("newBirthDate").value = "";
   document.getElementById("newFlight").value = "";
   alert("Passageiro editado!");
 }
@@ -166,11 +171,13 @@ const updateElement = () => {
       document.getElementById("id").value = rowId;
       document.getElementById("newPassageiro").value = nome;
       document.getElementById("newCPF").value = cpf;
+      document.getElementsById("newBirthDate");
       document.getElementById("newFlight").value = flight;
       document.getElementById("ProcessBtn").innerHTML= "Editar";
     }
   }
 }
+
 
 
 
@@ -223,29 +230,60 @@ const ProcessItem = () => {
   var id = document.getElementById("id").value;
   var inputPassageiro = document.getElementById("newPassageiro").value;
   var inputCPF = document.getElementById("newCPF").value;
+  var inputData = document.getElementById("newBirthdate").value;
   var inputFlight = document.getElementById("newFlight").value;
+  var bValidado = true;
+  var time = "T12:00:00";
+
+  if (inputPassageiro === '') {
+      alert("Escreva o nome de um passageiro!")
+      bValidado = false;
+    } else if (inputCPF === '') {
+      alert("Entre com o CPF"); 
+      bValidado = false;
+    } else if (inputBirthdate=== '') {
+      alert("Entre com a data de nascimento!"); 
+      bValidado = false;
+    } else if (inputFlight === '') {
+      alert("Entre com o Voo!");
+      bValidado = false;
+    }
+  
+      //valida CPF
+  if (bValidado && verificarCPF(inputCPF)===false) {
+    alert("CPF inválido! O CPF deve conter apenas números.");
+    bValidado = false;
+  }
+
+  // Valida data de nascimento
+  if (bValidado && isValidFormat(inputBirthDate)===false) {
+    alert("O formato da data está incorreto! Use AAAA-MM-DD");
+    bValidado = false;
+  }
+
+if (bValidado && isValidDate(inputBirthDate)===false) {
+    alert("Número de data inválido!");
+    bValidado = false;
+  }
+
+  var BirthDateTime = inputBirthDate.concat(time);
+
+  //validacao adicional com API externa
+  //if (ValidaPassageiro(inputPassageiro,inputCPF, inputBirthDate)===false){
+  //  bValidado = false;
+  //}
+
+  console.log(bValidado);
 
   if (document.getElementById("ProcessBtn").innerHTML=== "Editar")
   {
-    if (inputPassageiro === '') {
-      alert("Escreva o nome de um passageiro!")
-    } else if (inputCPF === '') {
-      alert("Entre com o CPF");
-    } else if (inputFlight === '') {
-      alert("Entre com o Voo!");
-    } else {
-      putItem(id,inputPassageiro, inputCPF, inputFlight);
+    if (bValidado){
+      putItem(id,inputPassageiro, inputCPF, BirthDateTime, inputFlight);
     }
   }
   else{
-    if (inputPassageiro === '') {
-      alert("Escreva o nome de um passageiro!")
-    } else if (inputCPF === '') {
-      alert("Entre com o CPF");
-    } else if (inputFlight === '') {
-      alert("Entre com o Voo!");
-    } else {
-      postItem(inputPassageiro, inputCPF, inputFlight);
+    if (bValidado){
+      postItem(inputPassageiro, inputCPF, BirthDateTime, inputFlight);
     }
   }
 
@@ -256,27 +294,130 @@ const ProcessItem = () => {
   Função para inserir items na lista apresentada
   --------------------------------------------------------------------------------------
 */
-const insertList = (id, namePassageiro, cpf, flight) => {
-  var item = [id,namePassageiro, cpf, flight]
+const insertList = (id, namePassageiro, cpf, birthdate, flight) => {
+  var item = [id,namePassageiro, cpf, birthdate, flight]
   var table = document.getElementById('myTable');
   var row = table.insertRow();
 
   for (var i = 0; i < item.length; i++) {
     if (i===0){
       row.id=item[0];
-      console.log(item[0]);
     }
     else{
       var cel = row.insertCell(i-1);
-      cel.textContent = item[i];
+      console.log(item[i], i);
+      if (i===3){
+        // Extract components
+        const date = new Date(item[i]);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;    // Months are 0-based, so add 1
+        const day = date.getDate();
+        cel.textContent= year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+      }
+      else{
+        cel.textContent = item[i];
+      }
     }
   }
   insertButton(row.insertCell(-1))
   insertButton2(row.insertCell(-1))
   document.getElementById("newPassageiro").value = "";
   document.getElementById("newCPF").value = "";
+  document.getElementById("newBirthDate").value = "";
   document.getElementById("newFlight").value = "";
 
   removeElement()
   updateElement()
 }
+
+function isValidFormat(dateString) {
+  // Check format using regex: YYYY-MM-DD
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(dateString)) {
+    return false; // Format doesn't match
+  }
+}
+
+function isValidDate(dateString) {
+  const date = new Date(dateString);
+  return date.isValid(dateString);
+}
+
+
+Date.prototype.isValid = function (dateString) {
+    // Compare the original date string with the date object
+    return this.getTime() === this.getTime() && dateString === this.toISOString().slice(0, 10);
+};
+
+function verificarCPF(strCpf) {
+    if (!/[0-9]{11}/.test(strCpf)) return false;
+    if (strCpf === "00000000000") return false;
+    var soma = 0;
+
+    for (var i = 1; i <= 9; i++) {
+        soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
+    }
+    var resto = soma % 11;
+
+    if (resto === 10 || resto === 11 || resto < 2) {
+        resto = 0;
+    } else {
+        resto = 11 - resto;
+    }
+    if (resto !== parseInt(strCpf.substring(9, 10))) {
+        return false;
+    }
+
+    soma = 0;
+
+    for (var i = 1; i <= 10; i++) {
+        soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
+    }
+    resto = soma % 11;
+    if (resto === 10 || resto === 11 || resto < 2) {
+        resto = 0;
+    } else {
+        resto = 11 - resto;
+    }
+    if (resto !== parseInt(strCpf.substring(10, 11))) {
+        return false;
+    }
+    return true;
+}
+
+/*
+const ValidaPassageiro = async (strPassageiro, strCpf, birthdate) => {
+  
+  const url = 'https://api.infosimples.com/api/v2/consultas/receita-federal/cpf?token=MpYLNaIH8agztz_PuGF0wuAX3AhU4D8souCpTdCk&cpf=' + strCpf + '&birthdate=' + birthdate;
+  //https://api.infosimples.com/api/v2/consultas/receita-federal/cpf?token=MpYLNaIH8agztz_PuGF0wuAX3AhU4D8souCpTdCk&cpf=03342352868&birthdate=1935-12-04
+
+  // POST request using fetch()
+  fetch(url, {
+      
+      // Adding method type
+      method: "POST",
+      // Adding body or contents to send
+      body: JSON.stringify(),
+      credentials: 'include', 
+      // Adding headers to the request
+      headers: {
+          "Content-type": "application/json;"
+      }
+  })
+
+  // Converting to JSON
+  .then(response => response.json())
+
+  // Displaying results to console
+
+  .then((json) => {
+    //console.log(data.nome);
+    //console.log(data.situacao_cadastral);
+    console.log(json);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+    alert("Erro ao chamar api externa!");
+  });
+  
+}*/
