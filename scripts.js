@@ -4,7 +4,7 @@
   --------------------------------------------------------------------------------------
 */
 const getList = async () => {
-  const url = 'http://127.0.0.1:5001/passageiros';
+  const url = 'http://127.0.0.1:5002/passageiros';
   fetch(url, {
     method: 'get',
   })
@@ -40,7 +40,7 @@ const postItem = async (inputPassageiro, inputCPF, inputBirthDate, inputFlight) 
   };
   const situacao_cadastral = "REGULAR";
 
-  const CPF_url = 'http://localhost:5001/external-data?cpf=' + inputCPF + '&birthdate=' + inputBirthDate;
+  const CPF_url = 'http://localhost:5002/external-data?cpf=' + inputCPF + '&birthdate=' + inputBirthDate;
  
   // GET request using fetch()
   fetch(CPF_url, {
@@ -82,7 +82,7 @@ const postItem = async (inputPassageiro, inputCPF, inputBirthDate, inputFlight) 
       }
       else {
         // Adiciona passageiro
-        const url = 'http://127.0.0.1:5001/passageiro';
+        const url = 'http://127.0.0.1:5002/passageiro';
         fetch(url, {
           method: 'post',
           headers: {
@@ -152,7 +152,7 @@ const putItem = async (id, inputPassageiro, inputCPF, inputBirthDate,inputFlight
   };
   const situacao_cadastral = "REGULAR";
 
-  const CPF_url = 'http://localhost:5000/external-data?cpf=' + inputCPF + '&birthdate=' + inputBirthDate;
+  const CPF_url = 'http://localhost:5002/external-data?cpf=' + inputCPF + '&birthdate=' + inputBirthDate;
  
   // GET request using fetch()
   fetch(CPF_url, {
@@ -194,7 +194,7 @@ const putItem = async (id, inputPassageiro, inputCPF, inputBirthDate,inputFlight
       }
       else {
         //inicio edita passageiro
-        const url = 'http://127.0.0.1:5001/passageiro';
+        const url = 'http://127.0.0.1:5002/passageiro';
         fetch(url, {
           method: 'put',
           headers: {
@@ -312,7 +312,7 @@ const removeElement = () => {
 const deleteItem = (item) => {
   console.log(item)
   
-  const url = 'http://127.0.0.1:5000/passageiro?cpf=' + item;
+  const url = 'http://127.0.0.1:5002/passageiro?cpf=' + item;
   fetch(url, {
     method: 'delete'
   })
