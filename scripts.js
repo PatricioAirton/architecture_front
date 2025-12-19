@@ -460,7 +460,7 @@ function verificarCPF(strCpf) {
     }
     var resto = soma % 11;
 
-    if (resto === 10 || resto === 11 || resto < 2) {
+    if (resto < 2) {
         resto = 0;
     } else {
         resto = 11 - resto;
@@ -475,7 +475,7 @@ function verificarCPF(strCpf) {
         soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
     }
     resto = soma % 11;
-    if (resto === 10 || resto === 11 || resto < 2) {
+    if (resto < 2) {
         resto = 0;
     } else {
         resto = 11 - resto;
