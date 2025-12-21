@@ -1,6 +1,6 @@
 # Meu Front
 
-Este projeto faz parte do MVP que incrementa o trabalho apresentado na Sprint Desenvolvimento full stack que suporta uma aplicação web para o gerenciamento de passageiros de um voo de eVTOL (electric Vertical Takeoff and Landing vehicle), conhecido como carro voar o qual inicialmente terá capacidade para trasnsportar 4 passageiros e 1 piloto, mas que no futuro já no conceito de voo autônomo irá trasnportar 5 passageiros https://globoplay.globo.com/v/14196087.
+Este projeto faz parte do MVP que incrementa o trabalho apresentado na Sprint Desenvolvimento full stack que suporta uma aplicação web para o gerenciamento de passageiros de um voo de eVTOL (electric Vertical Takeoff and Landing vehicle), conhecido como "carro voador" o qual inicialmente terá capacidade para trasnsportar 4 passageiros e 1 piloto, mas que no futuro já no conceito de voo autônomo irá trasnportar 5 passageiros https://globoplay.globo.com/v/14196087.
 
 O projeto do MVP foi desenvolvido de forma desacoplada, ou seja, com o back-end e o fron-end implementados separadamente em repositórios distintos.
 
